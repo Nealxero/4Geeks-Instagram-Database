@@ -8,31 +8,43 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
+class User(Base):
+    __tablename__ = 'User'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
-
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    username = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    password = Column(Integer, nullable=False)
+    phone_number = Column(Integer, nullable=False)
 
     def to_dict(self):
         return {}
 
-## Draw from SQLAlchemy base
-try:
-    result = render_er(Base, 'diagram.png')
-    print("Success! Check the diagram.png file")
-except Exception as e:
-    print("There was a problem genering the diagram")
-    raise e
+class Followers(Base):
+    __tablename__ = 'Followers'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer,ForeignKey('User.id'))
+    followers_id = Column(Integer, ForeignKey('Followers.id'))
+   
+    def to_dict(self):
+        return {}
+
+class Post(Base):
+    __tablename__ = 'Post'
+    id = Column(Integer, primary_key=True)
+    description = Column(String(250), nullable=False)
+    upload_Date = Column(String(250), nullable=False)
+    Likes = Column(Integer, nullable=False)
+    comments = Column(String(250), nullable=False) #Change to ID Later
+
+    def to_dict(self):
+        return {}
+
+class Comments(Base):
+    __tablename__ = 'Comments'
+    id = Column(Integer, primary_key=True)
+    content = Column(String(250), nullable=False)
+    upload_Date = Column(String(250), nullable=False)
